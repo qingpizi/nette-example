@@ -9,9 +9,10 @@ declare(strict_types=1);
  */
 
 use Nette\Utils\ArrayHash;
-use PHPUnit\Framework\TestCase;
+use Nette\Utils\ArrayList;
 use Nette\Utils\Arrays;
 use Nette\InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 class ArraysTest extends TestCase
 {
@@ -225,5 +226,21 @@ class ArraysTest extends TestCase
         $this->assertIsArray($hash->inner);
         $this->assertEquals($hash['inner']['a'], 'b');
         $this->assertIsArray((array) $hash);
+    }
+
+    public function testArrayList()
+    {
+        $list = new ArrayList();
+        $list[] = 'a';
+        $list[] = 'b';
+        $list[] = 'c';
+        $this->assertEquals($list->count(), 3);
+        $list->prepend('d');
+        $this->assertEquals($list[0], 'd');
+        $this->assertTrue($list->offsetExists(0));
+        $list->offsetSet(2, 'e');
+        $this->assertEquals($list->offsetGet(2), 'e');
+        $list->offsetUnset(2);
+        $this->assertFalse($list->offsetExists(3));
     }
 }
